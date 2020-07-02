@@ -20,4 +20,13 @@ class Product(models.Model):
 
     def __str__(self):
         return self.title
+        
+        
+    @property
+    def imageURL(self):
+        try:
+            url = self.image.url
+        except:
+            url = ''
+        return url
 
