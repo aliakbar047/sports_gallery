@@ -49,6 +49,28 @@ def cart(request):
 	return render(request,'store/cart.html',context)
 
 
+def checkout(request):
+	if request.user.is_authenticated:
+		customer = request.user
+		items = customer.orderitem_set.all()
+		try:
+			order = Order.objects.get(customer=customer,ordered=False)
+		except:
+			order = {}
+			print("hai how are you")
+	else:
+		order = {}
+		items = {}
+		
+	context = {
+		'items':items,
+		'order':order
+	}
+	
+	return render(request,'store/checkout.html',context)
+
+
+
 
 def updateItem(request):
 	data = json.loads(request.body)
