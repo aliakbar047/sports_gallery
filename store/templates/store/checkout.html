@@ -1,83 +1,46 @@
 {% extends 'store/base.html' %}
 {% load static %}
+
+{% load crispy_forms_tags %}
 {% block content %}
-     <div class="row">
-		<div class="col-lg-6">
-			<div class="box-element" id="form-wrapper">
-				<form id="form">
-					<div id="user-info">
-						<div class="form-field">
-							<input required class="form-control" type="text" name="name" placeholder="Name..">
-						</div>
-						<div class="form-field">
-							<input required class="form-control" type="email" name="email" placeholder="Email..">
-						</div>
-					</div>
-					
-					<div id="shipping-info">
-						<hr>
-						<p>Shipping Information:</p>
-						<hr>
-						<div class="form-field">
-							<input class="form-control" type="text" name="address" placeholder="Address..">
-						</div>
-						<div class="form-field">
-							<input class="form-control" type="text" name="city" placeholder="City..">
-						</div>
-						<div class="form-field">
-							<input class="form-control" type="text" name="state" placeholder="State..">
-						</div>
-						<div class="form-field">
-							<input class="form-control" type="text" name="zipcode" placeholder="Zip code..">
-						</div>
-						<div class="form-field">
-							<input class="form-control" type="text" name="country" placeholder="Zip code..">
-						</div>
-					</div>
 
-					<hr>
-					<input id="form-button" class="btn btn-success btn-block" type="submit" value="Continue">
-				</form>
-			</div>
-
-			<br>
-			<div class="box-element hidden" id="payment-info">
-				<small>Paypal Options</small>
-				<!--<button id="make-payment">Make payment</button>-->
-				<div id="paypal-button-container"></div>
-			</div>
+<div class="checkout">
+	<div class="product-total">
+		<div class="d-sm-inline">
+		<a  class="btn btn-outline-dark" href="{% url 'cart' %}">&#x2190; Back to Cart</a>
+		</div>
+		<div class="d-sm-inline pt-5 text-center">
+		<span class="float-sm-right"><strong> Total:   Rs.{{order.total|floatformat:2}}</strong></span>
+		<span class="float-left float-sm-right pl-3 pr-3"><strong>Items: {{order.total_items}}</strong></span>
+		</div>
+		<h3 class="pt-5 pb-2">Order Summary</h3>
+		<hr>
 			
-		</div>
-
-		<div class="col-12 col-md-6 col-lg-6">
-			<div class="box-element">
-				<a  class="btn btn-outline-dark" href="{% url 'cart' %}">&#x2190; Back to Cart</a>
-				<hr>
-				<h3>Order Summary</h3>
-				<hr>
-				{% for item in items %}
-				<div class="row">
-					<div class="col-4 col-md-4">
-					<div><img class="row-image" src="{{item.product.imageURL}}" 
-						style="width: 50px; height: auto;"></div>
-					</div>
-					<div class="col-4 col-md-4">
-					<div><p>{{item.product.title}}</p></div>
-					</div>
-					<div class="col-2 col-md-2">
-					<div><p>Rs.{{item.product.price|floatformat:2}}</p></div>
-					</div>
-					<div class="col-2 col-md-2">
-					<div><p>x{{item.quantity}}</p></div>
-					</div>
-				</div>
-				{% endfor %}
-				<hr>
-				<h5>Items:   {{order.total_items}}</h5>
-				<h5>Total:   Rs.{{order.total|floatformat:2}}</h5>
+		<div class="row checkout-items">
+			{% for item in order.order_items.all %}
+			<div class="col-3 col-md-4">
+				<img src="{{item.product.imageURL}}" 
+				style="width: 50px; height: auto;">
+			</div> 
+			<div class="col-3 col-md-4">
+				<p>{{item.product.title}}</p>
 			</div>
-		</div>
+			<div class="col-4 col-md-2">
+				<p>Rs.{{item.product.price|floatformat:2}}</p>
+			</div>
+			<div class="col-2 col-md-2">
+				<p>x{{item.quantity}}</p>
+			</div>
+			{% endfor %}
+		</div>		
 	</div>
+	<div class="checkout-form">
+		<form method="post">
+			{% csrf_token %}
+			{% crispy form %}
+		</form>
+	</div>
+</div>
 
 	
 {% endblock content %}

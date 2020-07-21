@@ -1,25 +1,40 @@
 {% extends 'store/base.html' %}
 {% load static %}
-{% block content %}
-	<div class="row">
-        {% for product in products %}
-        <hr>
-		<div class="col-12 col-sm-6 col-md-4 product">
-            <h6><strong>{{product.title}}</strong>
-                <span style="display: inline-block; float: right"><strong>Rs.{{product.price}}</strong></span>
-            </h6>
-            <h5 ></h5>
-				<hr>
-			<img class="thumbnail responsive" src="{{product.imageURL}}">
-			<div>
-                <hr>
-				<button data-product="{{product.id}}" data-action="add" class="btn btn-outline-secondary add-btn update-cart">Add to Cart</button>
-				
-				<a class="btn btn-outline-success" href="#">View</a>
 
+{% block content %}
+
+<div class="row product-list">
+
+	{% for product in products %}
+	<div class="col-12 col-sm-6 col-md-4 col-lg-3 pt-4 pb-4">
+		<div class="product">
+			<div>
+				<img class="thumbnail responsive" src="{{product.imageURL}}">
 			</div>
+			<div>
+				<h5><strong>{{product.title}}</strong></h5>
+			</div>
+			<div class="price">
+				<strong>Rs.{{product.price}}</strong>
+			</div>
+			<div>
+				<a href="{% url 'details' product.pk %}" class="btn-round">view</a>
+				<button data-product="{{product.id}}" data-action="add-remove"
+					class="btn-round add-wishlist">
+					<i class="fa fa-heart fa-lg" ></i>
+				</button>
+				<button data-product="{{product.id}}" data-action="add" 
+					class="btn-round update-cart">
+					<i class="fa fa-shopping-cart fa-lg"></i>
+				</button>
+			</div>
+			
 		</div>
-		{% endfor %}
 	</div>
+	{% endfor %}
+
+</div>
+
+
 
 {% endblock content %}

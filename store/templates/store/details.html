@@ -1,0 +1,42 @@
+{% extends 'store/base.html' %}
+{% load static %}
+{% block content %}
+
+	<h3 class="cart-header">
+		{{ product.title }}
+	</h3>
+    <hr>
+    
+    <div class="row product-details text-dark">
+        <div class="col-sm-12 col-md-6">
+            <img class="detail-image" src="{{product.imageURL}}">
+        </div>
+        <div class="col-sm-12 col-md-6">
+            <div class="pt-3 font-weight-bold text-xl">
+                <strong>{{ product.title }}</strong>
+            </div>
+            <div class="pt-3 font-weight-bold">
+              Price : Rs. <span class="text-danger">{{ product.price }}</span> 
+            </div>
+            <div class="pt-3 font-weight-bold">
+              Category :  {{ product.category }}
+            </div>
+            <div class="pt-3">
+                <h6 class="font-weight-bold">Description : </h6>
+                {{ product.description }}
+            </div>
+            <div class="detail-button pt-3">
+                <button data-product="{{product.id}}" data-action="add" 
+                class="add-to-cart update-cart">Add to cart</button>
+            </div>
+            <div class="detail-button pt-3">
+                <button data-product="{{product.id}}" data-action="add"
+                class="add-wishlist">Save for later</button>     
+            </div>
+            
+        </div>
+    </div>
+
+    
+
+{% endblock content %}

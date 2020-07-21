@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
 
     'store.apps.StoreConfig',
+
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -148,3 +150,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR,'static/images')
 
 ACCOUNT_LOGOUT_REDIRECT_URL ='/'
 LOGIN_REDIRECT_URL = '/'
+
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'

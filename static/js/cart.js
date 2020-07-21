@@ -1,4 +1,5 @@
 var updateBtns = document.getElementsByClassName('update-cart')
+var wishlist = document.getElementsByClassName('add-wishlist')
 
 for (i = 0; i < updateBtns.length; i++) {
 	updateBtns[i].addEventListener('click', function(){
@@ -9,6 +10,9 @@ for (i = 0; i < updateBtns.length; i++) {
 
 		if (user == 'AnonymousUser'){
 			console.log("Anonymous User")
+			location.href ='accounts/login';
+			
+
 		}else{
 			updateUserOrder(productId, action)
 		}
@@ -35,3 +39,46 @@ function updateUserOrder(productId, action){
 		    location.reload()
 		});
 }
+
+
+
+
+for (i = 0; i < wishlist.length; i++) {
+	wishlist[i].addEventListener('click', function(){
+		var productId = this.dataset.product
+		var action = this.dataset.action
+		console.log('productId:', productId, 'Action:', action)
+		console.log('USER:', user)
+
+		if (user == 'AnonymousUser'){
+			console.log("Anonymous User")
+			location.href ='accounts/login';
+		}else{
+			addWishlist(productId, action)
+		}
+	})
+}
+
+function addWishlist(productId, action){
+	console.log('User is authenticated, sending data...')
+
+		var url = '/add_wishlist/'
+
+		fetch(url, {
+			method:'POST',
+			headers:{
+				'Content-Type':'application/json',
+				'X-CSRFToken':csrftoken,
+			}, 
+			body:JSON.stringify({'productId':productId, 'action':action})
+		})
+		.then((response) => {
+		   return response.json();
+		})
+		.then((data) => {
+		    location.reload()
+		});
+}
+
+
+

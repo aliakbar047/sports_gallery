@@ -1,80 +1,75 @@
 {% extends 'store/base.html' %}
 {% load static %}
 {% block content %}
-	<div class="row">
-		<div class="col-12 col-sm-12 col-md-12 col-lg-12">
-			<div class="box-element">
 
-				<a  class="btn btn-outline-dark" href="{% url 'home' %}">&#x2190; Continue Shopping</a>
+	<h3 class="cart-header">
+		Shopping cart
+	</h3>
+	<hr>
+	{% if order != '' %}
+	<div class="cart-body">
 
-				<br>
-				<br>
-				<table class="table">
-					<tr>
-						<th><h5>Items: <strong>{{ order.total_items }}</strong></h5></th>
-						<th><h5>Total:<strong>Rs.{{ order.total }}</strong></h5></th>
-						<th>
-							<a  style="float:right; margin:5px;" class="btn btn-success" 
-							href="{% url 'checkout' %}">Checkout</a>
-						</th>
-					</tr>
-				</table>
-
+		<div class="cart-total">
+			<div class="pb-2">
+				subtotal( <strong>{{ order.total_items }}</strong>
+				{% if order.total_items > 1 %} 
+				items
+				{% else %}
+				item
+				{% endif %}
+				):
+				<span class="total-rs"><strong>Rs.{{ order.total }}</strong></span>
 			</div>
-
-
-
-
-			<!--Table-->
-			<table class="table table-hover table-fixed">
-
-				<!--Table head-->
-				<thead>
-				<tr>
-					<th>#</th>
-					<th></th>
-					<th>Item</th>
-					<th>Price</th>
-					<th>Quantity</th>
-					<th>Total</th>
-					
-				</tr>
-				</thead>
-				<!--Table head-->
-			
-				<!--Table body-->
-				
-				<tbody>
-					{% for item in items %}
-				<tr>
-					<th scope="row">{{ forloop.counter }}</th>
-					<td><img class="row-image" src="{{item.product.imageURL}}" style="width: 80px; height: auto;"></td>
-					<td>{{item.product.title}}</td>
-					<td>Rs.{{item.product.price|floatformat:2}}</td>
-					<td><div class="row">
-						<div class="col-md-3">
-							{{item.quantity}}
-						</div>
-					<div class="col-md-6">
-					<p style="line-height: 80%"><img data-product="{{item.product.id}}" data-action="add" class="chg-quantity update-cart" src="{% static  'images/arrow-up.png' %}" 
-						style="width: 15px; height: auto;"><br>
-					
-						<img data-product="{{item.product.id}}" data-action="remove" class="chg-quantity update-cart" src="{% static  'images/arrow-down.png' %}"
-						style="width: 15px; height: auto;"></p>
-					</div>
-					</div>
-					</td>
-					<td>Rs.{{ item.total }}</td>
-				</tr>
-				{% endfor %}
-				</tbody>
-				<!--Table body-->
-			
-			</table>
-			<!--Table-->
-
-			
+			<div class="proceed-buy">
+			<a href="{% url 'checkout' %}">Proceed to Buy</a>	
+			</div>
 		</div>
 	</div>
+	<div class="cart-items">
+		{% for item in order.order_items.all %}
+		<div class="cart-row">
+			<img class="row-image" src="{{item.product.imageURL}}">
+		</div>
+		<div class="cart-row">
+			<div class="pt-3">
+				{{item.product.title}}
+			</div>
+			<div class="pt-2">Price : 
+				Rs.{{item.product.price|floatformat:2}}
+			</div>
+			<div class="pt-2">
+				<button data-product="{{item.product.id}}" 
+					data-action="remove" class="chg-quantity update-cart">
+					<i class="fa fa-minus" aria-hidden="true"></i>
+				</button>
+				<span class="pl-1 pr-1">{{item.quantity}}</span>
+				<button data-product="{{item.product.id}}" 
+					data-action="add" class="chg-quantity update-cart">
+					<i class="fa fa-plus" aria-hidden="true"></i>
+				</button>
+				<span class="cart-delete pl-1"><button data-product="{{item.product.id}}" 
+					data-action="delete" class="chg-quantity update-cart">
+					delete</button></span>
+				<span class="cart-save pl-1"><button>Save</button></span>
+
+			</div>
+			<div class="pt-2">Total Price: 
+				Rs.{{ item.total }}
+			</div>
+		</div>
+		<br>
+		<hr>
+		{% endfor %}
+	</div>
+	{% else %}
+	
+	<div class="container empty-cart text-center">
+		<h2 class="pb-5">Your Cart is Empty</h2>
+		<div class="continue">
+			<a href="{% url 'home' %}">Continue Shopping</a>
+		</div>
+	</div>
+
+	{% endif %}
 
 {% endblock content %}

@@ -11,6 +11,7 @@ CATEGORY_CHOICES = (
     ('accessories','accessories'),
 )
 
+
 class Product(models.Model):
     title = models.CharField(max_length=30)
     category = models.CharField(max_length=50, choices=CATEGORY_CHOICES ,default='sports')
@@ -56,12 +57,43 @@ class Order(models.Model):
     ordered = models.BooleanField(default=False)
     transaction_complete = models.BooleanField(default=False)
     transaction_id = models.CharField(max_length=100, null=True)
-    # shipping_address = models.ForeignKey(
-    #     'Address', on_delete=models.SET_NULL, blank=True, null=True)
-    # payment = models.ForeignKey(
-    #     'Payment', on_delete=models.SET_NULL, blank=True, null=True)
+    address = models.ForeignKey(
+        'Address', on_delete=models.SET_NULL, blank=True, null=True)
+    
+
+    def __str__(self):
+        return self.customer.username
+
+
+class Address(models.Model):
+    customer = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True)
+    name = models.CharField(max_length=50)
+    mobile = models.IntegerField(null=True)
+    address1 = models.CharField(max_length=100)
+    address2 = models.CharField(max_length=100,blank=True,null=True)
+    city = models.CharField(max_length=50)
+    state = models.CharField(max_length=50)
+    zip = models.CharField(max_length=10)
+    save_for_later = models.BooleanField(default=False)
+
+    class Meta:
+        verbose_name_plural = 'Address'
 
 
     def __str__(self):
         return self.customer.username
+
+class WishList(models.Model):
+    customer = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True)
+
+    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
+
+
+    def __str__(self):
+        return self.customer.username
+
+
+
 

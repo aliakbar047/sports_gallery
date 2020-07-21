@@ -1,0 +1,77 @@
+{% extends 'store/base.html' %}
+{% load static %}
+{% block content %}
+
+<h3 class="cart-header">
+	Dashboard
+</h3>
+<hr>
+	
+<div class="container">
+	<div class="row dashboard">
+		<div class="col-12 col-sm-2 col-md-4 mx-auto">
+			<div class="profile">
+				<span class="">
+					<img class="profile-pic" src="{% static 'images/profile.png' %}" alt="profile">
+				</span>
+				<h3>
+					{{ user.username }}
+				</h3>
+				<span class="d-block">
+					<a href="" >Update Profile</a>
+				</span>
+				<span class="d-block"> 
+					<a href="">set default Address</a> 
+				</span>
+
+			</div>
+		</div>
+		{% if ordered != '' %}
+		<div class="col-12 col-sm-10 col-md-8">
+		  <div class="ordered-list">
+			{% for order in ordered %}
+			<div class="pt-5">
+				<strong>Date : {{ order.ordered_date }}</strong>
+			</div>
+			<hr>
+			<div class="pb-3">
+				subtotal( <strong>{{ order.total_items }}</strong>
+				{% if order.total_items > 1 %} 
+				items
+				{% else %}
+				item
+				{% endif %}
+				):
+				<span class="total-rs"><strong>Rs.{{ order.total }}</strong></span>
+			</div>
+			<div class="pb-5">
+				<span>Transaction Id : {{ order.transaction_id }}</span>
+			</div>
+			<div class="row checkout-items">
+				{% for item in order.order_items.all %}
+				<div class="col-3 col-md-4">
+					<img src="{{item.product.imageURL}}" 
+					style="width: 50px; height: auto;">
+				</div> 
+				<div class="col-3 col-md-4">
+					<p>{{item.product.title}}</p>
+				</div>
+				<div class="col-4 col-md-2">
+					<p>Rs.{{item.product.price|floatformat:2}}</p>
+				</div>
+				<div class="col-2 col-md-2">
+					<p>x{{item.quantity}}</p>
+				</div>
+				{% endfor %}
+			</div>
+			<hr>	
+			{% endfor %}	
+
+		  </div>
+
+		</div>
+		{% endif %}
+	</div>
+</div>
+		
+{% endblock content %}

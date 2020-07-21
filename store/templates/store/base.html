@@ -5,14 +5,13 @@
 <head>
 	<title>Sports</title>
 
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1" />
-
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1" />
+  
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
   <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
-    
 
   <script type="text/javascript">
 		var user = '{{request.user}}'
@@ -40,86 +39,99 @@
 <body>
 
 <!--Navbar -->
-<nav class="mb-1 navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="#">Sports Gallery</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-333"
-      aria-controls="navbarSupportedContent-333" aria-expanded="false" aria-label="Toggle navigation">
+<section id="header">
+
+  <div class="header">
+    <a href="#default" class="logo">SportsCart</a>
+    <div class="header-right">
+      <div class="dropdown line pr-2">
+        <a href="#about" class="dropdown-toggle" data-toggle="dropdown">
+          <i class="fa fa-user " aria-hidden="true"></i>
+        </a>
+        {% if user.is_authenticated %} 
+        <div class="dropdown-menu">
+          <a class="dropdown-item">{{ user.username }}</a>
+          <a class="dropdown-item " href="{% url 'profile' %}">Account</a>
+          <a class="dropdown-item " href="{% url 'account_logout' %}">SignOut</a>
+        </div>
+        {% else %}
+        <div class="dropdown-menu">
+          <a class="dropdown-item" href="{% url 'account_login' %}">SignIn</a>
+          <a class="dropdown-item " href="{% url 'account_signup' %}">SignUp</a>
+        </div>
+        {% endif %}
+      </div>
+      <div class ="line pr-2">
+        <a class="active" href="{% url 'wishlist' %}"><i class="fa fa-heart" aria-hidden="true">
+          {% if save_items != 0 %}
+          <sup class="super">{{ save_items }}</sup>
+          {% endif %}</i>
+        </a>
+      </div>
+      <div class ="line pr-2">
+        <a href="{% url 'cart' %}"><i class="fa fa-shopping-cart" aria-hidden="true">
+          {% if order != '' %}
+          <sup class="super">{{ order.total_items }}</sup>
+          {% endif %}</i>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent-333">
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
-          <a class="nav-link" href="#">Home
-            <span class="sr-only">(current)</span>
-          </a>
+          <a class="nav-link" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
+         </li>
+        <li class="nav-item">
+         <a class="nav-link" href="#">Cricket <span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Sports</a>
+          <a class="nav-link" href="#">Football</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Shoes</a>
+          <a class="nav-link" href="#">Toys<span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#">Jerseys</a>
+          <a class="nav-link" href="#">Jursey</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#">Accessories</a>
+          <a class="nav-link" href="#">Shoes <span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#">Kids</a>
+          <a class="nav-link" href="#">Accessories</a>
         </li>
-        
-      </ul>
-      {% if user.is_authenticated %} 
-      <ul class="navbar-nav ml-auto nav-flex-icons">
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-333" data-toggle="dropdown"
-            aria-haspopup="true" aria-expanded="false">
-            <span>{{ user.username }}</span>
-          </a>
-          <div class="dropdown-menu dropdown-menu-right dropdown-default"
-            aria-labelledby="navbarDropdownMenuLink-333">
-            <a class="dropdown-item" href="#">Account</a>
-            <a class="dropdown-item" href="#">Change Password</a>
-            <a class="dropdown-item" href="{% url 'account_logout' %}"><i class="fa fa-sign-out">Logout</i></a>
-          </div>
-        </li>
-        {% else %}
-        <li class="nav-item">
-         <button> <a class="nav-link" href="{% url 'account_login' %}">
-            <i class="fa fa-sign-in"> Sign in</i>
-          </a>
-          </button>
-        </li>
-        {% endif %}
-        <li class="nav-item">
-          <a class="nav-link" style="color: white;" href="{% url 'cart' %}">
-            <i class="fa fa-shopping-cart fa-lg"><sup style="color: red;">
-              <strong>{{ order.total_items }}</strong></sup></i>
-          </a>
-        </li>
-        
       </ul>
     </div>
-</nav>
+
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+
+  </nav>
+
+</section>
 <!--/.Navbar -->
 
 
-     <div class="container">
-            <br>
-            {% block content %}
+
+{% block content %}
+{% endblock content %}
 
 
-            {% endblock content %}
-         </div>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
 
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
 
-	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 
-	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-
-	<script type="text/javascript" src="{% static 'js/cart.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/cart.js' %}"></script>
 </body>
 </html>
