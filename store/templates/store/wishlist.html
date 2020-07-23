@@ -25,7 +25,7 @@
                 <span class="pr-3">
                     <a class="bg-info text-light" href="{% url 'details' item.product.pk %}">Details</a>
                 </span>
-                <a data-product="{{ item.product.id }}" data-action="add-remove" class="bg-warning text-danger add-wishlist" href="">Remove</a>    
+                <a data-product="{{ item.product.id }}" data-action="add-remove" class="bg-warning text-danger update-cart " href="">Remove</a>    
             </div>
             <div class="detail-button pt-3">
                 <button data-product="{{ item.product.id }}" data-action="add" class="add-to-cart text-dark update-cart">Add to cart</button>
